@@ -1,2 +1,2 @@
 # qc-web3-election
-truffle 
+dapp +  truffle 
