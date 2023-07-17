@@ -9,6 +9,13 @@ contract Election {
         uint voteCount;
     }
 
+
+    //写个用于监听的event
+    event votedEvent (
+        //indexed 事件参数关键词, 可以过滤日志查找关键词数据, 而不是获取所有日志
+        uint indexed _candidateId
+    );
+
     //定义一个mapping类型
     mapping(uint => Candidate) public candidates;
 
@@ -41,6 +48,9 @@ contract Election {
 
         //update candidate vote count
         candidates[_candidateId].voteCount ++;
+
+        // trigger voted event 
+        emit votedEvent(_candidateId);
 
 
     }

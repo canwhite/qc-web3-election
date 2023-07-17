@@ -38,12 +38,13 @@ contract("Election", function(accounts) {
     return Election.deployed().then(function(instance) {
       electionInstance = instance;
       candidateId = 1;
-      //可以把这个交易理解为sendTransaction({ from: accounts[0], to: electionInstance, data: vote(candidateId) });
       return electionInstance.vote(candidateId, { from: accounts[0] });
     }).then(function(receipt) {
+      assert.equal(receipt.logs.length, 1, "an event was triggered");
+      assert.equal(receipt.logs[0].event, "votedEvent", "the event type is correct");
+      assert.equal(receipt.logs[0].args._candidateId.toNumber(), candidateId, "the candidate id is correct");
       return electionInstance.voters(accounts[0]);
     }).then(function(voted) {
-      //asset做if判断，如果第一个为false的话，抛出错误信息
       assert(voted, "the voter was marked as voted");
       return electionInstance.candidates(candidateId);
     }).then(function(candidate) {
